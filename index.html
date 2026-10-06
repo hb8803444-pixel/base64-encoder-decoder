@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Online Base64 Encoder and Decoder</title>
+    <meta name="description" content="Encode and decode text to Base64 format instantly with our free online utility tool. Fast, secure, and easy to use for developers.">
+    <!-- Yahan aap apna Google Search Console verification meta tag aur Adsterra Popunder/Social Bar code paste karenge -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 130px;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .btn-success {
+            background-color: #27ae60;
+        }
+        .btn-success:hover {
+            background-color: #219653;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Base64 Encoder / Decoder</h1>
+        <p>Encode plain text to Base64 or decode Base64 back to plain text instantly.</p>
+        
+        <textarea id="input-text" placeholder="Enter text to encode or decode..."></textarea>
+
+        <div class="button-group">
+            <button class="btn" onclick="encodeText()">Encode to Base64</button>
+            <button class="btn btn-success" onclick="decodeText()">Decode from Base64</button>
+            <button class="btn" style="background-color: #e74c3c;" onclick="clearAll()">Clear</button>
+        </div>
+
+        <textarea id="output-text" placeholder="Result will appear here..." readonly></textarea>
+        
+        <button class="btn" style="background-color: #2c3e50; width: 100%; margin-top: 5px;" onclick="copyResult()">Copy Result</button>
+    </div>
+
+    <div style="max-width: 700px; margin: 30px auto; color: #555; font-size: 14px; line-height: 1.6; text-align: left;">
+        <h2>About Base64 Tool</h2>
+        <p>Base64 is a binary-to-text encoding scheme that represents binary data in an ASCII string format. This free online encoder and decoder tool helps developers quickly process strings securely within their browser.</p>
+    </div>
+
+    <script>
+        const inputText = document.getElementById("input-text");
+        const outputText = document.getElementById("output-text");
+
+        function encodeText() {
+            try {
+                // Using btoa with encodeURIComponent to support UTF-8 characters safely
+                let encoded = btoa(encodeURIComponent(inputText.value).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+                    return String.fromCharCode('0x' + p1);
+                }));
+                outputText.value = encoded;
+            } catch (e) {
+                alert("Error encoding text!");
+            }
+        }
+
+        function decodeText() {
+            try {
+                // Using atob with decodeURIComponent to support UTF-8 characters safely
+                let decoded = decodeURIComponent(Array.prototype.map.call(atob(inputText.value), function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                outputText.value = decoded;
+            } catch (e) {
+                alert("Invalid Base64 string!");
+            }
+        }
+
+        function clearAll() {
+            inputText.value = "";
+            outputText.value = "";
+        }
+
+        function copyResult() {
+            if(outputText.value === "") return;
+            navigator.clipboard.writeText(outputText.value);
+            alert("Result copied to clipboard!");
+        }
+    </script>
+
+</body>
+</html>
